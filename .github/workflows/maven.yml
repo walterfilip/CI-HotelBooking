@@ -41,7 +41,7 @@ jobs:
 
 
      - name: starta upp customerservice med databas
-       working-directory: customerservice
+       working-directory: hotelbooking
        run: docker compose up -d --build customer-service
 
      - name: avvakta så customerservice hinner starta
