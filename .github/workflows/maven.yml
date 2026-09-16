@@ -46,6 +46,11 @@ jobs:
         MYSQL_PASSWORD: secret
        run: docker compose up -d --build customer-service
 
+     - name: Visa CustomerService logs
+       if: always()
+       working-directory: hotelbooking
+       run: docker compose logs customer-service
+
      - name: avvakta så customerservice hinner starta
        run: sleep 30
 
