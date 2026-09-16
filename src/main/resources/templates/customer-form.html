@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hotellbokning</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+<div class="customer-form-container">
+    <h1>Kundformulär</h1>
+
+    <form th:action="@{/customers/booking}" method="post" id="customer-form">
+
+        <div class="customer-contact-input">
+            <label for="firstName">Förnamn</label>
+            <input type="text"
+                   id="firstName"
+                   name="firstName"
+                   required>
+            <small id="firstNameError" class="text-danger"></small>
+        </div>
+
+        <div class="customer-contact-input">
+            <label for="lastName">Efternamn</label>
+            <input type="text"
+                   id="lastName"
+                   name="lastName"
+                   required>
+            <small id="lastNameError" class="text-danger"></small>
+        </div>
+
+        <div class="customer-contact-input">
+            <label for="email">E-post</label>
+            <input type="text"
+                   id="email"
+                   name="email"
+                   required>
+            <small id="emailError" class="text-danger"></small>
+        </div>
+
+        <div class="customer-contact-input">
+            <label for="phoneNumber">Telefonnummer</label>
+            <input type="text"
+                   id="phoneNumber"
+                   name="phoneNumber"
+                   required>
+            <small id="phoneNumberError" class="text-danger"></small>
+        </div>
+
+        <div class="customer-contact-input">
+            <label for="password">Lösenord</label>
+            <input type="text"
+                   id="password"
+                   name="password"
+                   required>
+            <small id="passwordError" class="text-danger"></small>
+        </div>
+        <p id="loginHelp" class="error-container" th:if="${loginError}" th:text="${loginError}"
+        ></p>
+
+        <!-- Inputs från bokningen som följer med hidden -->
+        <input type="hidden"
+               name="roomId"
+               th:value="${roomId}">
+
+        <input type="hidden"
+               name="startDate"
+               th:value="${startDate}">
+
+        <input type="hidden"
+               name="endDate"
+               th:value="${endDate}">
+
+        <input type="hidden"
+               name="extraBed"
+               th:value="${extraBed}">
+
+        <button type="submit">Registrera och fortsätt</button>
+    </form>
+
+    <a href="/">Till startsidan</a>
+</div>
+<script th:src="@{/js/form.js}"></script>
+</body>
+</html>

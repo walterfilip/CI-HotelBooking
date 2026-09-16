@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="customer-form-container">
+    <h1>Ändra dina uppgifter</h1>
+    <h2 th:text="${'Konto ' + customer.email} "></h2>
+
+    <form th:action="@{/customers/edit}"
+          th:object="${customer}"
+          method="post">
+
+        <div class="customer-contact-input">
+            <label for="firstName">Förnamn: </label>
+            <input type="text"
+                   id="firstName"
+                   name="firstName"
+                   th:value="*{firstName}"
+                   required>
+        </div>
+
+        <div class="customer-contact-input">
+            <label for="lastName">Efternamn: </label>
+            <input type="text"
+                   id="lastName"
+                   name="lastName"
+                   th:value="*{lastName}"
+                   required>
+        </div>
+
+        <div class="customer-contact-input">
+            <label for="phoneNumber">Telefonnummer: </label>
+            <input type="text"
+                   id="phoneNumber"
+                   name="phoneNumber"
+                   th:value="*{phoneNumber}"
+                   required>
+        </div>
+        <br>
+        <strong>Ändra lösenord:</strong>
+
+        <div class="customer-contact-input">
+            <label for="password">Nuvarande Lösenord: </label>
+            <input type="password"
+                   id="password"
+                   name="password">
+        </div>
+        <div class="customer-contact-input">
+            <label for="newPassword">Nytt Lösenord: </label>
+            <input type="password"
+                   id="newPassword"
+                   name="newPassword">
+        </div>
+        <strong class="login-row text-danger" th:if="${message}" th:text="${message}" th:class="${color}"></strong>
+        <br>
+        <button type="submit">Slutför ändringar</button>
+        <br>
+        <br>
+        <br>
+            <a th:href="@{/customers}">
+                <button type="button">Tillbaka till Min sida</button>
+            </a>
+        <br>
+        <br>
+            <a th:href="@{/}">
+                <button type="button">Till startsidan</button>
+            </a>
+    </form>
+</div>
+</body>
+</html>

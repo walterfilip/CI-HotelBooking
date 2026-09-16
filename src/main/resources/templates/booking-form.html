@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hotellbokning - Boka rum</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div class="booking-summary-container">
+    <h1>Bekräfta bokning</h1>
+
+    <p>
+        <strong>Namn:</strong>
+        <a th:text="${customer.firstName + ' ' + customer.lastName}"></a>
+    </p>
+
+    <p>
+        <strong>E-post:</strong>
+        <a th:text="${customer.email}"></a>
+    </p>
+
+    <p>
+        <strong>Rumstyp:</strong>
+        <a th:text="${room.roomType.name() == 'SINGLE' ? 'Enkelrum': 'Dubbelrum'}"></a>
+    </p>
+
+    <p>
+        <strong>Beskrivning:</strong>
+        <a th:text="${room.description}"></a>
+    </p>
+
+    <p>
+        <strong>Extrasäng:</strong>
+        <a th:text="${extraBed} ? 'Ja (+200kr/natt)' : 'Nej'"></a>
+    </p>
+
+    <p>
+        <strong>Totalpris:</strong>
+        <a th:text="${totalPrice} + ' kr'"></a>
+    </p>
+
+    <p>
+        <strong>Incheckning:</strong>
+        <a th:text="${startDate}"></a>
+    </p>
+
+    <p>
+        <strong>Utcheckning:</strong>
+        <a th:text="${endDate}"></a>
+    </p>
+
+
+    <form th:action="@{/bookings}"
+          method="post">
+
+        <input type="hidden"
+               name="roomId"
+               th:value="${room.id}">
+
+        <input type="hidden"
+               name="startDate"
+               th:value="${startDate}">
+
+        <input type="hidden"
+               name="endDate"
+               th:value="${endDate}">
+
+        <input type="hidden"
+               name="extraBed"
+               th:value="${extraBed}">
+
+        <button type="submit">
+            Bekräfta bokning
+        </button>
+
+    </form>
+
+    <a href="/">Till startsidan</a>
+
+</div>
+</body>
+</html>

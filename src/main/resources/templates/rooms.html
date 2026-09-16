@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hotellbokning</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+<div class="rooms-container">
+    <h1>Tillgängliga Rum</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Rumstyp</th>
+            <th th:if="${roomType.name() == 'DOUBLE'}">Extrasäng</th>
+            <th>Pris per natt</th>
+            <th>Boka</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="room : ${rooms}">
+
+            <td>
+                <span th:text="${room.roomType.name() == 'SINGLE' ? 'Enkelrum' : 'Dubbelrum'}"></span>
+                <span th:text="${' (' + room.description + ')'}"></span>
+            </td>
+
+            <td th:if="${room.roomType.name() == 'DOUBLE'}">
+
+                <input type="checkbox"
+                       name="extraBed"
+                       value="true"
+                       th:form="${customer == null
+                        ? 'bookingForm-' + room.id
+                        : 'loggedInBookingForm-' + room.id}">
+            </td>
+
+            <td th:text="${room.price + ' kr'}"></td>
+
+            <!-- Boka -->
+            <td>
+
+                <!-- Ej inloggad -->
+                <form
+                        th:if="${customer == null}"
+                        th:id="'bookingForm-' + ${room.id}"
+                        th:action="@{/customers/form}"
+                        method="get">
+
+                    <input type="hidden"
+                           name="roomId"
+                           th:value="${room.id}">
+
+                    <input type="hidden"
+                           name="startDate"
+                           th:value="${startDate}">
+
+                    <input type="hidden"
+                           name="endDate"
+                           th:value="${endDate}">
+
+                    <button type="submit">
+                        Boka rum
+                    </button>
+                </form>
+
+                <!-- Inloggad -->
+                <form
+                        th:if="${customer != null}"
+                        th:id="${'loggedInBookingForm-' + room.id}"
+                        th:action="@{/bookings/form}"
+                        method="get">
+
+                    <input type="hidden"
+                           name="roomId"
+                           th:value="${room.id}">
+
+                    <input type="hidden"
+                           name="startDate"
+                           th:value="${startDate}">
+
+                    <input type="hidden"
+                           name="endDate"
+                           th:value="${endDate}">
+
+                    <button type="submit">
+                        Boka rum
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="/">Till startsidan</a>
+</div>
+</body>
+</html>

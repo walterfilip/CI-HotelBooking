@@ -1,0 +1,97 @@
+services:
+  hotelbooking-db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: hotelbooking
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - hotelbooking-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -p$$MYSQL_ROOT_PASSWORD"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  customer-db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: customerservice
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - customer-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -p$$MYSQL_ROOT_PASSWORD"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  customer-service:
+    build:
+      context: ../CustomerService
+    ports:
+      - "8081:8081"
+    environment:
+      PORT: 8081
+      SPRING_DATASOURCE_URL: jdbc:mysql://customer-db:3306/customerservice
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+      BOOKING_SERVICE_BASE_URL: http://hotelbooking:8080
+    depends_on:
+      customer-db:
+        condition: service_healthy
+
+  hotelbooking:
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: 8080
+      SPRING_DATASOURCE_URL: jdbc:mysql://hotelbooking-db:3306/hotelbooking
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+      CUSTOMER_SERVICE_BASE_URL: http://customer-service:8081
+    depends_on:
+      hotelbooking-db:
+        condition: service_healthy
+      customer-service:
+        condition: service_started
+
+volumes:
+  hotelbooking-data:
+  customer-data:
+
+
+#services:
+#
+#  customer-db:
+#    image: mysql:8
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root
+#      MYSQL_DATABASE: customerdb
+#
+#
+#  order-db:
+#    image: mysql:8
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root
+#      MYSQL_DATABASE: orderdb
+#
+#
+#
+#  customer-service:
+#    build: ./customer-service
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - customer-db
+#
+#
+#  order-service:
+#    build: ./order-service
+#    ports:
+#      - "8081:8081"
+#
+#    depends_on:
+#      - order-db
+#      - customer-service

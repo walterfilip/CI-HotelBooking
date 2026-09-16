@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hotellbokning</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+<h1>Kundsida</h1>
+
+<form th:action="@{/bookings/changedate/{id}(id=${booking.id})}" method="post">
+    <table>
+        <div class="date-row">
+            <label>Incheckning</label>
+            <input type="date" name="startDate">
+
+            <label>Utcheckning</label>
+            <input type="date" name="endDate">
+
+            <button
+                    th:id="'btn-' + ${booking.id}"
+                    type="submit">
+                Ändra
+            </button>
+
+        </div>
+
+        <div th:if="${errorMessage}" class="error-container">
+            <span th:text="${errorMessage}"></span>
+        </div>
+    </table>
+</form>
+
+<a href="/">Till startsidan</a>
+</body>
+</html>
