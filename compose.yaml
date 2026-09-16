@@ -27,7 +27,7 @@ services:
 
   customer-service:
     build:
-      context: ../CustomerService
+      context: ../CI-Customerservice
     ports:
       - "8081:8081"
     environment:
