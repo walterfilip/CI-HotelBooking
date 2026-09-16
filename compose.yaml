@@ -3,7 +3,7 @@ services:
     image: mysql:8.4
     environment:
       MYSQL_DATABASE: hotelbooking
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: secret
     volumes:
       - hotelbooking-data:/var/lib/mysql
     healthcheck:
@@ -16,7 +16,7 @@ services:
     image: mysql:8.4
     environment:
       MYSQL_DATABASE: customerservice
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: secret
     volumes:
       - customer-data:/var/lib/mysql
     healthcheck:
@@ -34,7 +34,7 @@ services:
       PORT: 8081
       SPRING_DATASOURCE_URL: jdbc:mysql://customer-db:3306/customerservice
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+      SPRING_DATASOURCE_PASSWORD: secret
       BOOKING_SERVICE_BASE_URL: http://hotelbooking:8080
     depends_on:
       customer-db:
@@ -49,7 +49,7 @@ services:
       PORT: 8080
       SPRING_DATASOURCE_URL: jdbc:mysql://hotelbooking-db:3306/hotelbooking
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+      SPRING_DATASOURCE_PASSWORD: secret
       CUSTOMER_SERVICE_BASE_URL: http://customer-service:8081
     depends_on:
       hotelbooking-db:
