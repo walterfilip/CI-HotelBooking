@@ -22,11 +22,14 @@ jobs:
     steps:
      - name: checkout hotelbooking
        uses: actions/checkout@v4
+       with:
+         path: hotelbooking
 
      - name: checkout customerservice
        uses: actions/checkout@v4
        with:
         repository: walterfilip/CI-Customerservice
+        path: customerservice
 
 
      - name: Set up JDK 25
@@ -38,7 +41,7 @@ jobs:
 
 
      - name: starta upp customerservice med databas
-       #working-directory: hotelbooking
+       working-directory: customerservice
        run: docker compose up -d --build customer-service
 
      - name: avvakta så customerservice hinner starta
@@ -48,12 +51,12 @@ jobs:
        run: curl -f http://localhost:8081/api/customers/1
 
      - name: bygg och kör tester
-       #working-directory: hotelbooking
+       working-directory: hotelbooking
        run: mvn --batch-mode test
 
      - name: Stäng ner allt efter test
        if: always()
-      # working-directory: hotelbooking
+       working-directory: hotelbooking
        run: docker compose down -v
 
     # - name: Build with Maven
