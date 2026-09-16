@@ -29,7 +29,7 @@ jobs:
         repository: walterfilip/CI-Customerservice
 
 
-     - name: Set up JDK 17
+     - name: Set up JDK 25
        uses: actions/setup-java@v4
        with:
         java-version: '25'
@@ -38,7 +38,7 @@ jobs:
 
 
      - name: starta upp customerservice med databas
-       working-directory: hotelbooking
+       #working-directory: hotelbooking
        run: docker compose up -d --build customer-service
 
      - name: avvakta så customerservice hinner starta
