@@ -20,13 +20,42 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
+     - name: checkout hotelbooking
+       uses: actions/checkout@v4
+
+     - name: checkout customerservice
+       uses: actions/checkout@v4
+       with:
+        repository: walterfilip/CI-Customerservice
+
+
+     - name: Set up JDK 17
+       uses: actions/setup-java@v4
+       with:
         java-version: '25'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml -DskipTests
+
+
+     - name: starta upp customerservice med databas
+       working-directory: hotelbooking
+       run: docker compose up -d --build customer-service
+
+     - name: avvakta så customerservice hinner starta
+       run: sleep 30
+
+     - name: Testa endpoint
+       run: curl -f http://localhost:8081/api/customers/1
+
+     - name: bygg och kör tester
+       working-directory: hotelbooking
+       run: mvn --batch-mode test
+
+     - name: Stäng ner allt efter test
+       if: always()
+       working-directory: hotelbooking
+       run: docker compose down -v
+
+    # - name: Build with Maven
+     #  run: mvn -B package --file pom.xml -DskipTests
 
