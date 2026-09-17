@@ -16,8 +16,17 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+
+    services:
+      mysql:
+       image: mysql:8.4
+       env:
+         MYSQL_ROOT_PASSWORD: root
+         MYSQL_DATABASE: hotelbooking
+       ports:
+        - 3306:3306
+
 
     steps:
      - name: checkout hotelbooking
