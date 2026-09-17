@@ -26,7 +26,12 @@ jobs:
          MYSQL_DATABASE: hotelbooking
        ports:
         - 3306:3306
-
+    env:
+     MYSQL_PASSWORD: root
+     SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/hotelbooking
+     SPRING_DATASOURCE_USERNAME: root
+     SPRING_DATASOURCE_PASSWORD: root
+     CUSTOMER_SERVICE_BASE_URL: http://localhost:8081
 
     steps:
      - name: checkout hotelbooking
@@ -51,8 +56,6 @@ jobs:
 
      - name: starta upp customerservice med databas
        working-directory: hotelbooking
-       env:
-        MYSQL_PASSWORD: secret
        run: docker compose up -d --build customer-service
 
      - name: Visa CustomerService logs
