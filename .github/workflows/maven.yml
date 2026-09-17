@@ -23,10 +23,7 @@ jobs:
       SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/hotelbooking
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: secret
-#      CUSTOMER_SERVICE_BASE_URL: http://localhost:8081
-      SERVICE_CUSTOMER_BASE_URL: http://localhost:8081
-
-
+      CUSTOMER_SERVICE_BASE_URL: http://localhost:8081
 
     steps:
       - name: checkout hotelbooking
