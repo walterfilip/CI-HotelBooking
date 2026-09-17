@@ -25,6 +25,8 @@ jobs:
      SPRING_DATASOURCE_USERNAME: root
      SPRING_DATASOURCE_PASSWORD: secret
      CUSTOMER_SERVICE_BASE_URL: http://localhost:8081
+     services.customer.base-url: http://localhost:8081
+
 
     steps:
      - name: checkout hotelbooking
