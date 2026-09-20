@@ -26,12 +26,12 @@ jobs:
       CUSTOMER_SERVICE_BASE_URL: http://localhost:8081
 
     steps:
-      - name: checkout hotelbooking
+      - name: Checkout HotelBooking
         uses: actions/checkout@v4
         with:
           path: hotelbooking
 
-      - name: checkout customerservice
+      - name: checkout CustomerService
         uses: actions/checkout@v4
         with:
           repository: walterfilip/CI-Customerservice
@@ -46,30 +46,27 @@ jobs:
           cache: maven
 
 
-      - name: starta upp customerservice med databas
+      - name: Start up CustomerService
         working-directory: hotelbooking
         run: docker compose up -d --build customer-service
 
-      - name: Visa CustomerService logs
+      - name: Show CustomerService logs
         if: always()
         working-directory: hotelbooking
         run: docker compose logs customer-service
 
-      - name: avvakta så customerservice hinner starta
+      - name: Wait for Customerservice to start
         run: sleep 30
 
-      - name: Testa endpoint
+      - name: Test CustomerService endpoint
         run: curl -f http://localhost:8081/api/customers/1
 
-      - name: bygg och kör tester
+      - name: Build and run tests
         working-directory: hotelbooking
         run: mvn --batch-mode test
 
-      - name: Stäng ner allt efter test
+      - name: Stop Containers
         if: always()
         working-directory: hotelbooking
         run: docker compose down -v
-
-      # - name: Build with Maven
-      #  run: mvn -B package --file pom.xml -DskipTests
 
