@@ -16,7 +16,7 @@ services:
     image: mysql:8.4
     environment:
       MYSQL_DATABASE: customerservice
-      MYSQL_ROOT_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${CDB_MYSQL_PASSWORD}
     volumes:
       - customer-data:/var/lib/mysql
     healthcheck:
