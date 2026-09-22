@@ -48,7 +48,7 @@ services:
       PORT: 8080
       SPRING_DATASOURCE_URL: jdbc:mysql://hotelbooking-db:3306/hotelbooking
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
       CUSTOMER_SERVICE_BASE_URL: http://customer-service:8081
     depends_on:
       hotelbooking-db:
