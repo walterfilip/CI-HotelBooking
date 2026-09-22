@@ -37,14 +37,12 @@ jobs:
           repository: walterfilip/CI-Customerservice
           path: customerservice
 
-
       - name: Set up JDK 25
         uses: actions/setup-java@v4
         with:
           java-version: '25'
           distribution: 'temurin'
           cache: maven
-
 
       - name: Start up CustomerService
         working-directory: hotelbooking
