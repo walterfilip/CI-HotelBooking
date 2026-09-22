@@ -19,7 +19,6 @@ jobs:
         ports:
           - 3306:3306
     env:
-      MYSQL_PASSWORD: secret
       SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/hotelbooking
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: secret
