@@ -3,7 +3,7 @@ services:
     image: mysql:8.4
     environment:
       MYSQL_DATABASE: hotelbooking
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - hotelbooking-data:/var/lib/mysql
     healthcheck:
@@ -16,7 +16,7 @@ services:
     image: mysql:8.4
     environment:
       MYSQL_DATABASE: customerservice
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
     volumes:
       - customer-data:/var/lib/mysql
     healthcheck:
