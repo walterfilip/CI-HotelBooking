@@ -23,6 +23,7 @@ jobs:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: ${{secrets.SPRING_DATASOURCE_PASSWORD}}
       CUSTOMER_SERVICE_BASE_URL: http://localhost:8081
+      CUSTOMER_DB_PASSWORD: ${{secrets.CDB_MYSQL_PASSWORD}}
 
     steps:
       - name: Checkout HotelBooking

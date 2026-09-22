@@ -34,7 +34,7 @@ services:
       PORT: 8081
       SPRING_DATASOURCE_URL: jdbc:mysql://customer-db:3306/customerservice
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_DATASOURCE_PASSWORD: ${CDB_MYSQL_PASSWORD}
     depends_on:
       customer-db:
         condition: service_healthy
