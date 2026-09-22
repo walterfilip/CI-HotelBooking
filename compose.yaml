@@ -35,7 +35,6 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://customer-db:3306/customerservice
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: secret
-      BOOKING_SERVICE_BASE_URL: http://hotelbooking:8080
     depends_on:
       customer-db:
         condition: service_healthy
@@ -51,7 +50,6 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: secret
       CUSTOMER_SERVICE_BASE_URL: http://customer-service:8081
-      services.customer.base-url: http://customer-service:8081
     depends_on:
       hotelbooking-db:
         condition: service_healthy
