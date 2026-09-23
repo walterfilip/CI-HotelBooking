@@ -24,6 +24,7 @@ jobs:
       MYSQL_PASSWORD: ${{secrets.MYSQL_PASSWORD}}
       CUSTOMER_SERVICE_BASE_URL: http://localhost:8081
       CDB_MYSQL_PASSWORD: ${{secrets.CDB_MYSQL_PASSWORD}}
+
     steps:
       - name: Checkout HotelBooking
         uses: actions/checkout@v4
