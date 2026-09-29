@@ -33,7 +33,7 @@ public class DataSeeder implements CommandLineRunner {
             roomRepository.save(new Room(RoomType.DOUBLE, "110", "Bröllopssvit", 1500));
 
         } else {
-            firstRoom = roomRepository.findById(1L);
+            firstRoom = roomRepository.findById(1L).orElse(null);
         }
     }
 }
