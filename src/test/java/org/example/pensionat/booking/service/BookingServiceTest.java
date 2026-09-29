@@ -98,7 +98,6 @@ class BookingServiceTest {
 
     @Test
     void shouldCancelExpiredBookings() {
-        //Mockito override, när. findAll anropas returnerar vi våran egna mock lista
         when(bookingRepository.findAll()).thenReturn(bookings);
         bookingService.updateExpiredBookings();
         assertEquals(BookingStatus.CANCELLED, expiredBooking.getStatus());
