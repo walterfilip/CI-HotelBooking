@@ -26,7 +26,8 @@ public class SecurityConfig {
                                 "/customers/login",
                                 "/rooms/search",
                                 "/customers/form",
-                                "/customers/booking"
+                                "/customers/booking",
+                                "/actuator/health"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
