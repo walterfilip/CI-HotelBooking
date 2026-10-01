@@ -7,11 +7,18 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.servlet.ModelAndView;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(HttpClientErrorException.Unauthorized.class)
     public ModelAndView handleUnauthorized() {
+        log.warn("Customer login failed: unauthorized");
+
         ModelAndView modelAndView = new ModelAndView("index");
 
         //setStatus gör ingenting i programmet just nu, det är bara för att displaya korrekt felstatus i typ Postman
@@ -25,6 +32,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceAccessException.class)
     public ModelAndView handleServiceUnavailable() {
+        log.error("Customer service unavaible: connection error");
+
         ModelAndView modelAndView = new ModelAndView("index");
 
         modelAndView.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
@@ -37,6 +46,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
     public ModelAndView handleNotFound(NotFoundException exception) {
+        log.info("Requested resource not found");
+
         ModelAndView modelAndView = new ModelAndView("index");
 
         modelAndView.setStatus(HttpStatus.NOT_FOUND);
@@ -49,6 +60,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
     public ModelAndView handleBadRequest(BadRequestException exception) {
+        log.info("Request rejected: invalid input");
+
         ModelAndView modelAndView = new ModelAndView("index");
 
         modelAndView.setStatus(HttpStatus.BAD_REQUEST);
@@ -61,6 +74,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ForbiddenException.class)
     public ModelAndView handleForbidden(ForbiddenException exception) {
+        log.warn("Access to booking denied");
+
         ModelAndView modelAndView = new ModelAndView("index");
 
         modelAndView.setStatus(HttpStatus.FORBIDDEN);

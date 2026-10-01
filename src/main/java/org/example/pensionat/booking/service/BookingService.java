@@ -16,14 +16,11 @@ import org.example.pensionat.utils.Validations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.ResourceAccessException;
-
 
 import java.time.temporal.ChronoUnit;
-
 import java.time.LocalDate;
-import java.util.List;
 
+import java.util.List;
 
 @Service
 public class BookingService {
@@ -32,14 +29,13 @@ public class BookingService {
     private final BookingRepository bookingRepository;
     private final RoomRepository roomRepository;
     private final CustomerClient customerClient;
-    private final Logger logger;
 
+    private static final Logger log = LoggerFactory.getLogger(BookingService.class);
 
     public BookingService(BookingRepository bookingRepository, RoomRepository roomRepository, CustomerClient customerClient) {
         this.bookingRepository = bookingRepository;
         this.roomRepository = roomRepository;
         this.customerClient = customerClient;
-        this.logger = LoggerFactory.getLogger(getClass());
     }
 
     public List<Booking> getAllBookings() {
@@ -79,9 +75,9 @@ public class BookingService {
                 request.extraBed(),
                 BookingStatus.ACTIVE
         );
-        var savedBooking = bookingRepository.save(booking);
-        logger.info("Booking saved");
 
+        Booking savedBooking = bookingRepository.save(booking);
+        log.info("Booking created successfully");
         return savedBooking;
     }
 
@@ -91,9 +87,10 @@ public class BookingService {
         Booking booking = getBookingById(bookingId, customerId);
 
         booking.setStatus(BookingStatus.CANCELLED);
-        var canelledBooking = bookingRepository.save(booking);
-        logger.info("Booking cancelled");
-        return canelledBooking;
+
+        Booking cancelledBooking = bookingRepository.save(booking);
+        log.info("Booking cancelled successfully");
+        return cancelledBooking;
     }
 
     private void validateRoomAvailability(Long roomId, LocalDate start, LocalDate end, Long bookingIdToIgnore) {
@@ -128,9 +125,8 @@ public class BookingService {
         booking.setStartDate(request.startDate());
         booking.setEndDate(request.endDate());
 
-        var updatedBooking = bookingRepository.save(booking);
-        logger.info("Booking updated");
-
+        Booking updatedBooking = bookingRepository.save(booking);
+        log.info("Booking date changed successfully");
         return updatedBooking;
     }
 
