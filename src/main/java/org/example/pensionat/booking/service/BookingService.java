@@ -2,7 +2,6 @@ package org.example.pensionat.booking.service;
 
 import jakarta.transaction.Transactional;
 import org.example.pensionat.booking.BookingStatus;
-import org.example.pensionat.booking.controller.BookingController;
 import org.example.pensionat.booking.model.Booking;
 import org.example.pensionat.booking.model.CreateBookingRequest;
 import org.example.pensionat.booking.repository.BookingRepository;
@@ -14,16 +13,14 @@ import org.example.pensionat.room.RoomType;
 import org.example.pensionat.room.model.Room;
 import org.example.pensionat.room.repository.RoomRepository;
 import org.example.pensionat.utils.Validations;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.ResourceAccessException;
-
-import java.time.temporal.ChronoUnit;
-
-import java.time.LocalDate;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
+
+import java.util.List;
 
 @Service
 public class BookingService {
@@ -91,9 +88,9 @@ public class BookingService {
 
         booking.setStatus(BookingStatus.CANCELLED);
 
-        Booking savedBooking = bookingRepository.save(booking);
+        Booking cancelledBooking = bookingRepository.save(booking);
         log.info("Booking cancelled successfully");
-        return savedBooking;
+        return cancelledBooking;
     }
 
     private void validateRoomAvailability(Long roomId, LocalDate start, LocalDate end, Long bookingIdToIgnore) {
@@ -128,9 +125,9 @@ public class BookingService {
         booking.setStartDate(request.startDate());
         booking.setEndDate(request.endDate());
 
-        Booking savedBooking = bookingRepository.save(booking);
+        Booking updatedBooking = bookingRepository.save(booking);
         log.info("Booking date changed successfully");
-        return savedBooking;
+        return updatedBooking;
     }
 
     @Transactional
