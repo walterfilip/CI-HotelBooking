@@ -13,6 +13,8 @@ import org.example.pensionat.room.RoomType;
 import org.example.pensionat.room.model.Room;
 import org.example.pensionat.room.repository.RoomRepository;
 import org.example.pensionat.utils.Validations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
@@ -30,12 +32,14 @@ public class BookingService {
     private final BookingRepository bookingRepository;
     private final RoomRepository roomRepository;
     private final CustomerClient customerClient;
+    private final Logger logger;
 
 
     public BookingService(BookingRepository bookingRepository, RoomRepository roomRepository, CustomerClient customerClient) {
         this.bookingRepository = bookingRepository;
         this.roomRepository = roomRepository;
         this.customerClient = customerClient;
+        this.logger = LoggerFactory.getLogger(getClass());
     }
 
     public List<Booking> getAllBookings() {
@@ -75,8 +79,10 @@ public class BookingService {
                 request.extraBed(),
                 BookingStatus.ACTIVE
         );
+        var savedBooking = bookingRepository.save(booking);
+        logger.info("Booking saved");
 
-        return bookingRepository.save(booking);
+        return savedBooking;
     }
 
     @Transactional
@@ -85,7 +91,9 @@ public class BookingService {
         Booking booking = getBookingById(bookingId, customerId);
 
         booking.setStatus(BookingStatus.CANCELLED);
-        return bookingRepository.save(booking);
+        var canelledBooking = bookingRepository.save(booking);
+        logger.info("Booking cancelled");
+        return canelledBooking;
     }
 
     private void validateRoomAvailability(Long roomId, LocalDate start, LocalDate end, Long bookingIdToIgnore) {
@@ -120,7 +128,10 @@ public class BookingService {
         booking.setStartDate(request.startDate());
         booking.setEndDate(request.endDate());
 
-        return bookingRepository.save(booking);
+        var updatedBooking = bookingRepository.save(booking);
+        logger.info("Booking updated");
+
+        return updatedBooking;
     }
 
     @Transactional
