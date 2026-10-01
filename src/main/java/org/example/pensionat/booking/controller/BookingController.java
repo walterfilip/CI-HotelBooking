@@ -14,6 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.example.pensionat.customer.client.CustomerClient;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.LocalDate;
 
 @Controller
@@ -23,6 +26,8 @@ public class BookingController {
     private final BookingService bookingService;
     private final CustomerClient customerClient;
     private final RoomService roomService;
+
+    private static final Logger log = LoggerFactory.getLogger(BookingController.class);
 
     public BookingController(BookingService bookingService, CustomerClient customerClient, RoomService roomService) {
         this.bookingService = bookingService;
@@ -72,8 +77,7 @@ public class BookingController {
             Authentication authentication) {
         Long customerId = (Long) authentication.getPrincipal();
 
-        CreateBookingRequest request =
-                new CreateBookingRequest(
+        CreateBookingRequest request = new CreateBookingRequest(
                         customerId,
                         roomId,
                         startDate,
@@ -81,6 +85,8 @@ public class BookingController {
                         extraBed
                 );
         bookingService.createBooking(request);
+
+        log.info("Booking created successfully");
 
         model.addAttribute("message", "Bokning skapad!");
 
@@ -92,6 +98,8 @@ public class BookingController {
         Long customerId = (Long) authentication.getPrincipal();
 
         bookingService.cancelBooking(id, customerId);
+
+        log.info("Booking cancelled successfully");
 
         model.addAttribute("message", "Bokning avbruten!");
 
@@ -118,6 +126,7 @@ public class BookingController {
         Booking booking = bookingService.getBookingById(id, customerId);
 
         if (startDate.isBlank() || endDate.isBlank()) {
+            log.info("Booking date change rejected: missing dates");
 
             model.addAttribute("booking", booking);
             model.addAttribute("errorMessage", "Du måste välja datum för både incheckning och utcheckning!");
@@ -129,8 +138,7 @@ public class BookingController {
         LocalDate parsedStartDate = LocalDate.parse(startDate);
         LocalDate parsedEndDate = LocalDate.parse(endDate);
 
-        CreateBookingRequest request =
-                new CreateBookingRequest(
+        CreateBookingRequest request = new CreateBookingRequest(
                         booking.getCustomerId(),
                         booking.getRoom().getId(),
                         parsedStartDate,
@@ -139,11 +147,16 @@ public class BookingController {
                 );
         try {
             bookingService.changeBookingDate(request, id, customerId);
+
+            log.info("Booking dates updated successfully");
+
             model.addAttribute("message", "Bokning ändrad!");
 
             return "booking-result";
 
         } catch (BadRequestException exception) {
+            log.info("Booking date change rejected: invalid dates or room unavailable");
+
             model.addAttribute("booking", booking);
             model.addAttribute("errorMessage", exception.getMessage());
 
