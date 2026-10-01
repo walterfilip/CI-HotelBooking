@@ -137,13 +137,11 @@ public class BookingController {
                 );
         try {
             bookingService.changeBookingDate(request, id, customerId);
-
             model.addAttribute("message", "Bokning ändrad!");
 
             return "booking-result";
 
         } catch (BadRequestException exception) {
-
             model.addAttribute("booking", booking);
             model.addAttribute("errorMessage", exception.getMessage());
 
