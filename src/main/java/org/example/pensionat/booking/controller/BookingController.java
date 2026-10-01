@@ -72,8 +72,7 @@ public class BookingController {
             Authentication authentication) {
         Long customerId = (Long) authentication.getPrincipal();
 
-        CreateBookingRequest request =
-                new CreateBookingRequest(
+        CreateBookingRequest request = new CreateBookingRequest(
                         customerId,
                         roomId,
                         startDate,
@@ -129,8 +128,7 @@ public class BookingController {
         LocalDate parsedStartDate = LocalDate.parse(startDate);
         LocalDate parsedEndDate = LocalDate.parse(endDate);
 
-        CreateBookingRequest request =
-                new CreateBookingRequest(
+        CreateBookingRequest request = new CreateBookingRequest(
                         booking.getCustomerId(),
                         booking.getRoom().getId(),
                         parsedStartDate,
