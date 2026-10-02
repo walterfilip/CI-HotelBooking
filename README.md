@@ -135,3 +135,40 @@ Tester körs i respektive projekt med:
 - MySQL
 - Maven
 - Docker och Docker Compose
+
+## Teamarbete och DevOps-flöde
+
+Vi har jobbat trunk-based med en skyddad huvudbranch `master` och kortlivade feature-branches. Det passade vårt lilla team eftersom vi kunde göra mindre ändringar och slå ihop dem ofta.
+
+Vårt arbetsflöde:
+
+1. Vi skapar en feature-branch från `master`.
+2. När ändringen är klar öppnar vi en pull request.
+3. CI bygger projektet och kör testerna automatiskt.
+4. En annan gruppmedlem granskar koden och lämnar feedback.
+5. När CI är grön och PR:en är godkänd kan den mergas.
+6. Efter merge deployas den nya versionen till Railway.
+
+Vi pushar inte direkt till huvudbranchen. Branch protection kräver en godkänd review och grön CI innan merge.
+
+## Merge-konflikten
+
+Vi ville testa att hantera en merge-konflikt och gjorde därför loggningen på två olika feature-branches. Att loggningen hamnade i olika klasser var däremot en slump, på den ena branchen låg den i `BookingController` och på den andra i `BookingService`. Det ledde till en riktig diskussion om vilken placering som var bäst. Den första PR:en behövde sedan ändras lite för att ändringarna skulle krocka i samma kod.
+
+Båda brancherna fick varsin PR och när den andra skulle mergas fick vi konflikten. Vi valde inte bara en av versionerna, utan tog delar från båda. Den ena hade bättre variabelnamn medan den andra hade lite renare kod. Loggningen hamnade till slut i `BookingService`, eftersom det är där logiken för bokningarna finns, medan felloggningen fick ligga kvar i `GlobalExceptionHandler`. Konflikten var alltså planerad, men vi löste den på samma sätt som en naturlig konflikt: vi jämförde lösningarna, diskuterade vad som var bäst och kombinerade koden. Efteråt kontrollerade vi att projektet byggde och att testerna gick igenom. Den färdiga ändringen finns i [pull request #18](https://github.com/walterfilip/CI-HotelBooking/pull/18).
+
+## Loggning och observerbarhet
+
+Vi använder olika loggnivåer beroende på vad som händer:
+
+- `INFO` när en bokning skapas, avbokas eller ändras.
+- `WARN` vid till exempel misslyckad inloggning eller nekad åtkomst.
+- `ERROR` när ett tekniskt fel uppstår, till exempel om CustomerService inte går att nå.
+
+Vi loggar aldrig lösenord, tokens eller personuppgifter.
+
+Spring Boot Actuator ger oss [`/actuator/health`](https://ci-hotelbooking-production.up.railway.app/actuator/health), som visar om tjänsten är igång. Railway använder den som health check. Vi visar inte några detaljer utåt eftersom de kan innehålla intern information. Actuator lades till i [pull request #16](https://github.com/walterfilip/CI-HotelBooking/pull/16).
+
+## Driftsatt tjänst
+
+Tjänsten är deployad på [Railway](https://ci-hotelbooking-production.up.railway.app/).
