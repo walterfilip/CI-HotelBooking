@@ -13,7 +13,6 @@ public class PensionatApplication {
         SpringApplication.run(PensionatApplication.class, args);
     }
 
- // hej
 
     @Bean
     CommandLineRunner updateBoookings(BookingService bookingService) {
